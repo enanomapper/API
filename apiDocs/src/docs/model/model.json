@@ -1,0 +1,492 @@
+{
+
+    "apiVersion": "2.5.9-SNAPSHOT",
+    "swaggerVersion": "1.2",
+    "basePath": "http://enanomapper.ntua.gr:8080",
+    "produces": [
+        "application/json",
+        "text/n3",
+        "application/rdf+xml",
+        "text/uri-list"
+    ],
+    "resourcePath": "/model",
+    "apis": [
+        {
+            "path": "/model",
+            "operations": [
+                {
+                    "method": "GET",
+                    "summary": "Get a list of all available models",
+                    "notes": "Returns list of models <a href='http://opentox.org/dev/apis/api-1.2/Model' target='opentox'>OpenTox Model API</a>",
+                    "type": "Model",
+                    "nickname": "getModels",
+                    "authorizations": { },
+                    "parameters": [
+                    ],
+                    "responseMessages": [
+                        {
+                            "code": 200,
+                            "message": "Model(s) found"
+                        },
+                        {
+                            "code": 404,
+                            "message": "Models not found"
+                        },
+                        {
+                            "code": 403,
+                            "message": "Forbidden"
+                        },
+                        {
+                            "code": 401,
+                            "message": "Not Authorized"
+                        },
+                        {
+                            "code": 405,
+                            "message": "Method not allowed"
+                        },
+                        {
+                            "code": 500,
+                            "message": "Internal server error"
+                        },
+                        {
+                            "code": 501,
+                            "message": "Not implemented"
+                        },
+                        {
+                            "code": 503,
+                            "message": "Service unavailable"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "/model/{id}",
+            "operations": [
+                {
+                    "method": "GET",
+                    "summary": "Returns model representation",
+                    "notes": "Returns model representation <a href='http://opentox.org/dev/apis/api-1.2/Model' target='opentox'>OpenTox Model API</a>",
+                    "type": "Model",
+                    "nickname": "getModelByID",
+                    "authorizations": { },
+                    "parameters": [
+                        {
+                            "name": "id",
+                            "description": "Model ID",
+                            "required": true,
+                            "type": "int",
+                            "paramType": "path",
+                            "allowMultiple": false,
+                            "defaultValue": "1",
+                            "minimum": "1"
+                        }
+                    ],
+                    "responseMessages": [
+                        {
+                            "code": 200,
+                            "message": "Model found"
+                        },
+                        {
+                            "code": 404,
+                            "message": "Model not found"
+                        },
+                        {
+                            "code": 400,
+                            "message": "Invalid model identifier"
+                        },
+                        {
+                            "code": 403,
+                            "message": "Forbidden"
+                        },
+                        {
+                            "code": 401,
+                            "message": "Not Authorized"
+                        },
+                        {
+                            "code": 405,
+                            "message": "Method not allowed"
+                        },
+                        {
+                            "code": 500,
+                            "message": "Internal server error"
+                        },
+                        {
+                            "code": 501,
+                            "message": "Not implemented"
+                        },
+                        {
+                            "code": 503,
+                            "message": "Service unavailable"
+                        }
+                    ]
+                },
+                {
+                    "method": "POST",
+                    "summary": "Apply the model. Returns a task.",
+                    "notes": "Applies the model to a dataset and returns a task with the result (a dataset) <a href='http://opentox.org/dev/apis/api-1.2/Model' target='opentox'>OpenTox Model API</a>. See the Task service how to query the task.",
+                    "type": "Task",
+                    "nickname": "applyModel",
+                    "consumes": [
+                        "application/x-www-form-urlencoded"
+                    ],
+                    "authorizations": { },
+                    "parameters": [
+                        {
+                            "name": "id",
+                            "description": "Model ID",
+                            "required": true,
+                            "type": "int",
+                            "paramType": "path",
+                            "allowMultiple": false
+                        },
+                        {
+                            "name": "dataset_uri",
+                            "description": "The dataset to be processed. Mandatory parameter (See Dataset service)",
+                            "required": true,
+                            "type": "string",
+                            "paramType": "form",
+                            "allowMultiple": false,
+                            "defaultValue": "http://apps.ideaconsult.net:8080/enanomapper/dataset/1?pagesize=3"
+                        },
+                        {
+                            "name": "dataset_service",
+                            "description": "A Dataset service URI. A new dataset with predicted feature values will be created. (see Dataset service)",
+                            "required": false,
+                            "type": "string",
+                            "paramType": "form",
+                            "allowMultiple": false
+                        },
+                        {
+                            "name": "parameters",
+                            "description": "result_datasetURI, pointing to a resulting dataset. This dataset will be updated with the predicted feature values.",
+                            "required": false,
+                            "type": "string",
+                            "paramType": "form",
+                            "allowMultiple": false
+                        }
+                    ],
+                    "responseMessages": [
+                        {
+                            "code": 200,
+                            "message": "The task is completed"
+                        },
+                        {
+                            "code": 201,
+                            "message": "Another task resumes the job"
+                        },
+                        {
+                            "code": 202,
+                            "message": "Task is not completed"
+                        },
+                        {
+                            "code": 400,
+                            "message": "The task is completed, but returns an error"
+                        },
+                        {
+                            "code": 404,
+                            "message": "Model not found"
+                        },
+                        {
+                            "code": 400,
+                            "message": "Bad request"
+                        },
+                        {
+                            "code": 403,
+                            "message": "Forbidden"
+                        },
+                        {
+                            "code": 401,
+                            "message": "Not Authorized"
+                        },
+                        {
+                            "code": 405,
+                            "message": "Method not allowed"
+                        },
+                        {
+                            "code": 500,
+                            "message": "Internal server error"
+                        },
+                        {
+                            "code": 501,
+                            "message": "Not implemented"
+                        },
+                        {
+                            "code": 503,
+                            "message": "Service unavailable"
+                        }
+                    ]
+                },
+                {
+                    "method": "DELETE",
+                    "summary": "Deletes the model. Returns a task",
+                    "notes": "Deletes the model <a href='http://opentox.org/dev/apis/api-1.2/Model' target='opentox'>OpenTox Model API</a>. See the Task service how to query the task.",
+                    "type": "Task",
+                    "nickname": "deleteModel",
+                    "consumes": [
+                        "application/x-www-form-urlencoded"
+                    ],
+                    "authorizations": { },
+                    "parameters": [
+                        {
+                            "name": "id",
+                            "description": "Model ID",
+                            "required": true,
+                            "type": "int",
+                            "paramType": "path",
+                            "allowMultiple": false
+                        }
+                    ],
+                    "responseMessages": [
+                        {
+                            "code": 200,
+                            "message": "The task is completed"
+                        },
+                        {
+                            "code": 201,
+                            "message": "Another task resumes the job"
+                        },
+                        {
+                            "code": 202,
+                            "message": "Task is not completed"
+                        },
+                        {
+                            "code": 400,
+                            "message": "The task is completed, but returns an error"
+                        },
+                        {
+                            "code": 404,
+                            "message": "Model not found"
+                        },
+                        {
+                            "code": 400,
+                            "message": "Bad request"
+                        },
+                        {
+                            "code": 403,
+                            "message": "Forbidden"
+                        },
+                        {
+                            "code": 401,
+                            "message": "Not Authorized"
+                        },
+                        {
+                            "code": 405,
+                            "message": "Method not allowed"
+                        },
+                        {
+                            "code": 500,
+                            "message": "Internal server error"
+                        },
+                        {
+                            "code": 501,
+                            "message": "Not implemented"
+                        },
+                        {
+                            "code": 503,
+                            "message": "Service unavailable"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "/model/{id}/independent",
+            "operations": [
+                {
+                    "method": "GET",
+                    "summary": "List of independent variables",
+                    "notes": "Returns list of features used as independent variables <a href='http://opentox.org/dev/apis/api-1.2/Model' target='opentox'>OpenTox Model API</a>",
+                    "type": "Feature",
+                    "nickname": "getModelIndependentVariables",
+                    "authorizations": { },
+                    "parameters": [
+                        {
+                            "name": "id",
+                            "description": "Model ID",
+                            "required": true,
+                            "type": "int",
+                            "paramType": "path",
+                            "allowMultiple": false,
+                            "defaultValue": "1",
+                            "minimum": "1"
+                        }
+                    ],
+                    "responseMessages": [
+                        {
+                            "code": 200,
+                            "message": "Independent variables found"
+                        },
+                        {
+                            "code": 404,
+                            "message": "Independent variables not found"
+                        },
+                        {
+                            "code": 400,
+                            "message": "Invalid model identifier"
+                        },
+                        {
+                            "code": 403,
+                            "message": "Forbidden"
+                        },
+                        {
+                            "code": 401,
+                            "message": "Not Authorized"
+                        },
+                        {
+                            "code": 405,
+                            "message": "Method not allowed"
+                        },
+                        {
+                            "code": 500,
+                            "message": "Internal server error"
+                        },
+                        {
+                            "code": 501,
+                            "message": "Not implemented"
+                        },
+                        {
+                            "code": 503,
+                            "message": "Service unavailable"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "/model/{id}/dependent",
+            "operations": [
+                {
+                    "method": "GET",
+                    "summary": "List of dependent variables",
+                    "notes": "Returns list of features used as dependent variables <a href='http://opentox.org/dev/apis/api-1.2/Model' target='opentox'>OpenTox Model API</a>",
+                    "type": "Feature",
+                    "nickname": "getModelDependentVariables",
+                    "authorizations": { },
+                    "parameters": [
+                        {
+                            "name": "id",
+                            "description": "Model ID",
+                            "required": true,
+                            "type": "int",
+                            "paramType": "path",
+                            "allowMultiple": false,
+                            "defaultValue": "1",
+                            "minimum": "1"
+                        }
+                    ],
+                    "responseMessages": [
+                        {
+                            "code": 200,
+                            "message": "Dependent variables found"
+                        },
+                        {
+                            "code": 404,
+                            "message": "Dependent variables not found"
+                        },
+                        {
+                            "code": 400,
+                            "message": "Invalid model identifier"
+                        },
+                        {
+                            "code": 403,
+                            "message": "Forbidden"
+                        },
+                        {
+                            "code": 401,
+                            "message": "Not Authorized"
+                        },
+                        {
+                            "code": 405,
+                            "message": "Method not allowed"
+                        },
+                        {
+                            "code": 500,
+                            "message": "Internal server error"
+                        },
+                        {
+                            "code": 501,
+                            "message": "Not implemented"
+                        },
+                        {
+                            "code": 503,
+                            "message": "Service unavailable"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "/model/{id}/predicted",
+            "operations": [
+                {
+                    "method": "GET",
+                    "summary": "List of predicted features",
+                    "notes": "Returns list of features used as predicted variables <a href='http://opentox.org/dev/apis/api-1.2/Model' target='opentox'>OpenTox Model API</a>",
+                    "type": "Feature",
+                    "nickname": "getModelPredictedVariables",
+                    "authorizations": { },
+                    "parameters": [
+                        {
+                            "name": "id",
+                            "description": "Model ID",
+                            "required": true,
+                            "type": "int",
+                            "paramType": "path",
+                            "allowMultiple": false,
+                            "defaultValue": "1",
+                            "minimum": "1"
+                        }
+                    ],
+                    "responseMessages": [
+                        {
+                            "code": 200,
+                            "message": "Predicted variables found"
+                        },
+                        {
+                            "code": 404,
+                            "message": "Predicted variables not found"
+                        },
+                        {
+                            "code": 400,
+                            "message": "Invalid model identifier"
+                        },
+                        {
+                            "code": 403,
+                            "message": "Forbidden"
+                        },
+                        {
+                            "code": 401,
+                            "message": "Not Authorized"
+                        },
+                        {
+                            "code": 405,
+                            "message": "Method not allowed"
+                        },
+                        {
+                            "code": 500,
+                            "message": "Internal server error"
+                        },
+                        {
+                            "code": 501,
+                            "message": "Not implemented"
+                        },
+                        {
+                            "code": 503,
+                            "message": "Service unavailable"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "info": {
+        "title": "AMBIT 2.5.9-SNAPSHOT",
+        "description": "AMBIT REST web services. More \n at <a href=\"http://apps.ideaconsult.net:8080/enanomapper\">http://apps.ideaconsult.net:8080/enanomapper</a> ",
+        "termsOfServiceUrl": "http://ambit.sf.net",
+        "contact": "Ideaconsult Ltd.",
+        "license": "License",
+        "licenseUrl": "http://www.gnu.org/licenses/lgpl.html"
+    }
+
+}
