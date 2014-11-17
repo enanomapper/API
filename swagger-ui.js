@@ -1379,7 +1379,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 
     HeaderView.prototype.events = {
       'click #show-enanomapper-dev-icon': 'showEnanoMapperDev',      
-      'click #show-ambit-dev-icon': 'showAmbitDev',
+      'click #show-ambit-dev-icon': 'showNTUADev',
       'click #show-pet-store-icon': 'showPetStore',
       'click #explore': 'showCustom',
       'keyup #input_baseUrl': 'showCustomOnKeyup',
@@ -1396,11 +1396,11 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     
     HeaderView.prototype.showEnanoMapperDev = function(e) {
       return this.trigger('update-swagger-ui', {
-        url: "http://apps.ideaconsult.net:8080/enanomapper/api-docs"
+        url: "http://apps.ideaconsult.net:8080/enmtest/api-docs"
       });
     };
 
-    HeaderView.prototype.showAmbitDev = function(e) {
+    HeaderView.prototype.showNTUADev = function(e) {
       return this.trigger('update-swagger-ui', {
         url: "http://enanomapper.ntua.gr/api-docs"
       });
