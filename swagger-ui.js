@@ -1401,7 +1401,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 
     HeaderView.prototype.showPartnerDev = function(e) {
       return this.trigger('update-swagger-ui', {
-         url: "https://raw.githubusercontent.com/enanomapper/API/master/apiDocs/src/docs/api-docs.json"
+         url: "http://enanomapper.github.io/API/specs/api-docs"
       });
     };
     
