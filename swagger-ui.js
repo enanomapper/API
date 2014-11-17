@@ -1379,7 +1379,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 
     HeaderView.prototype.events = {
       'click #show-enanomapper-dev-icon': 'showEnanoMapperDev',      
-      'click #show-ambit-dev-icon': 'showNTUADev',
+      'click #show-dev-icon': 'showPartnerDev',
       'click #show-pet-store-icon': 'showPetStore',
       'click #explore': 'showCustom',
       'keyup #input_baseUrl': 'showCustomOnKeyup',
@@ -1388,9 +1388,9 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 
     HeaderView.prototype.initialize = function() {};
 
-    HeaderView.prototype.showPetStore = function(e) {
+    HeaderView.prototype.showNTUADev = function(e) {
       return this.trigger('update-swagger-ui', {
-        url: "http://petstore.swagger.wordnik.com/api/api-docs"
+          url: "http://enanomapper.ntua.gr/api-docs"
       });
     };
     
@@ -1400,9 +1400,9 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
       });
     };
 
-    HeaderView.prototype.showNTUADev = function(e) {
+    HeaderView.prototype.showPartnerDev = function(e) {
       return this.trigger('update-swagger-ui', {
-        url: "http://enanomapper.ntua.gr/api-docs"
+         url: "http://petstore.swagger.wordnik.com/api/api-docs"
       });
     };
     
