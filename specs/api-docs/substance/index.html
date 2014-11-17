@@ -1,0 +1,937 @@
+{
+
+    "apiVersion": "2.5.9-SNAPSHOT",
+    "swaggerVersion": "1.2",
+    "basePath": "http://apps.ideaconsult.net:8080/enanomapper",
+    "produces": [
+        "application/json",
+        "text/uri-list",
+        "image/png",
+        "application/x-javascript"
+    ],
+    "resourcePath": "/substance",
+    "apis": [
+        {
+            "path": "/substance",
+            "operations": [
+                {
+                    "method": "GET",
+                    "summary": "List substances",
+                    "notes": "Returns a list of substances, according to the search criteria",
+                    "type": "Substance",
+                    "nickname": "getSubstances",
+                    "authorizations": { },
+                    "parameters": [
+                        {
+                            "name": "search",
+                            "description": "Search parameter",
+                            "required": false,
+                            "type": "string",
+                            "paramType": "query",
+                            "allowMultiple": false,
+                            "defaultValue": "formaldehyde"
+                        },
+                        {
+                            "name": "type",
+                            "description": "Query type",
+                            "required": true,
+                            "type": "string",
+                            "paramType": "query",
+                            "allowMultiple": false,
+                            "defaultValue": "name",
+                            "enum": [
+                                "name",
+                                "uuid",
+                                "CompTox",
+                                "DOI",
+                                "reliability",
+                                "purposeFlag",
+                                "studyResultType",
+                                "isRobustStudy",
+                                "citation",
+                                "topcategory",
+                                "endpointcategory",
+                                "params",
+                                "owner_name",
+                                "owner_uuid",
+                                "related",
+                                "reference",
+                                "facet"
+                            ]
+                        },
+                        {
+                            "name": "compound_uri",
+                            "description": "If type=related finds all substances containing this compound; if type=reference - finds all substances with this compound as reference structure",
+                            "required": false,
+                            "type": "string",
+                            "paramType": "query",
+                            "allowMultiple": false
+                        },
+                        {
+                            "name": "page",
+                            "description": "Staring page",
+                            "required": false,
+                            "type": "int",
+                            "paramType": "query",
+                            "allowMultiple": false,
+                            "defaultValue": "0",
+                            "minimum": "0",
+                            "maximum": "10000"
+                        },
+                        {
+                            "name": "pagesize",
+                            "description": "Page size",
+                            "required": false,
+                            "type": "int",
+                            "paramType": "query",
+                            "allowMultiple": false,
+                            "defaultValue": "10",
+                            "minimum": "1",
+                            "maximum": "10000"
+                        }
+                    ],
+                    "responseMessages": [
+                        {
+                            "code": 200,
+                            "message": "OK. Substance(s) found"
+                        },
+                        {
+                            "code": 404,
+                            "message": "Substances not found"
+                        },
+                        {
+                            "code": 403,
+                            "message": "Forbidden"
+                        },
+                        {
+                            "code": 401,
+                            "message": "Not Authorized"
+                        },
+                        {
+                            "code": 405,
+                            "message": "Method not allowed"
+                        },
+                        {
+                            "code": 500,
+                            "message": "Internal server error"
+                        },
+                        {
+                            "code": 501,
+                            "message": "Not implemented"
+                        },
+                        {
+                            "code": 503,
+                            "message": "Service unavailable"
+                        }
+                    ]
+                },
+                {
+                    "method": "POST",
+                    "summary": "Import substance(s) and studies",
+                    "notes": "Import substance(s) and studies. Supports IUCLID5 <a href='http://iuclid.eu/index.php?fuseaction=home.format'>*.i5z</a> files and custom <a href='https://github.com/ideaconsult/Protein_Corona'>12 line header</a> CSV files",
+                    "type": "Task",
+                    "nickname": "uploadSubstance",
+                    "consumes": [
+                        "multipart/form-data",
+                        "application/x-www-form-urlencoded"
+                    ],
+                    "authorizations": { },
+                    "parameters": [
+                        {
+                            "name": "files[]",
+                            "description": "Files to upload",
+                            "required": true,
+                            "type": "File",
+                            "paramType": "form",
+                            "allowMultiple": true
+                        },
+                        {
+                            "name": "qaenabled",
+                            "description": "Import only high quality study records",
+                            "required": false,
+                            "type": "string",
+                            "paramType": "form",
+                            "allowMultiple": false,
+                            "defaultValue": "name",
+                            "enum": [
+                                "checked",
+                                "on",
+                                "yes",
+                                "off",
+                                ""
+                            ]
+                        },
+                        {
+                            "name": "clearMeasurements",
+                            "description": "Clear existing study records of imported substance(s)",
+                            "required": false,
+                            "type": "string",
+                            "paramType": "form",
+                            "allowMultiple": false,
+                            "defaultValue": "name",
+                            "enum": [
+                                "checked",
+                                "on",
+                                "yes",
+                                "off",
+                                ""
+                            ]
+                        },
+                        {
+                            "name": "clearComposition",
+                            "description": "Clear existing composition records of imported substance(s)",
+                            "required": false,
+                            "type": "string",
+                            "paramType": "form",
+                            "allowMultiple": false,
+                            "defaultValue": "name",
+                            "enum": [
+                                "checked",
+                                "on",
+                                "yes",
+                                "off",
+                                ""
+                            ]
+                        },
+                        {
+                            "name": "purposeflag",
+                            "description": "Purpose flag: 921 (key study); 1590 (supporting study); 1661 (weight of evidence); 8108 (disregarded study); NOT_SPECIFIED; null",
+                            "required": false,
+                            "type": "string",
+                            "paramType": "form",
+                            "allowMultiple": true,
+                            "defaultValue": "name",
+                            "enum": [
+                                "921",
+                                "1590",
+                                "1661",
+                                "8108",
+                                "NOT_SPECIFIED",
+                                "null"
+                            ]
+                        },
+                        {
+                            "name": "studyresulttype",
+                            "description": "Study result type: 1895 (experimental result);1896 (experimental study planned); 2303 (read-across based on grouping of substances (category approach)); 2304 (read-across from supporting substance (structural analogue or surrogate)); 14 ((Q)SAR); 1342 (other); 1173 (no data); NOT_SPECIFIED; null",
+                            "required": false,
+                            "type": "string",
+                            "paramType": "form",
+                            "allowMultiple": true,
+                            "defaultValue": "name",
+                            "enum": [
+                                "1895",
+                                "1896",
+                                "2303",
+                                "2304",
+                                "14",
+                                "1342",
+                                "1173",
+                                "NOT_SPECIFIED",
+                                "null"
+                            ]
+                        },
+                        {
+                            "name": "testmaterial",
+                            "description": "Test material : 2480 (yes); 2158 (no); NOT_SPECIFIED; null",
+                            "required": false,
+                            "type": "string",
+                            "paramType": "form",
+                            "allowMultiple": true,
+                            "defaultValue": "name",
+                            "enum": [
+                                "2480",
+                                "2158",
+                                "NOT_SPECIFIED",
+                                "null"
+                            ]
+                        },
+                        {
+                            "name": "reliability",
+                            "description": "Reliability : 16 - 1 (reliable without restriction); 18 - 2 (reliable with restrictions); 22 - 3 (not reliable); 24 - 4 (not assignable); 1342 - other; NOT_SPECIFIED; null",
+                            "required": false,
+                            "type": "string",
+                            "paramType": "form",
+                            "allowMultiple": true,
+                            "defaultValue": "name",
+                            "enum": [
+                                "16",
+                                "18",
+                                "22",
+                                "24",
+                                "1342",
+                                "NOT_SPECIFIED",
+                                "null"
+                            ]
+                        },
+                        {
+                            "name": "referencetype",
+                            "description": "Reference type: 1586 (study report); 266 (other company data; 1433 (publication); 1486 (review article or handbook);\n1542 (secondary source);811 (grey literature);1342 (title);NOT_SPECIFIED; null",
+                            "required": false,
+                            "type": "string",
+                            "paramType": "form",
+                            "allowMultiple": true,
+                            "defaultValue": "name",
+                            "enum": [
+                                "1586",
+                                "266",
+                                "1433",
+                                "1486",
+                                "1542",
+                                "811",
+                                "1342",
+                                "NOT_SPECIFIED",
+                                "null"
+                            ]
+                        }
+                    ],
+                    "responseMessages": [
+                        {
+                            "code": 200,
+                            "message": "The task is completed"
+                        },
+                        {
+                            "code": 201,
+                            "message": "Another task resumes the job"
+                        },
+                        {
+                            "code": 202,
+                            "message": "Task is not completed"
+                        },
+                        {
+                            "code": 400,
+                            "message": "The task is completed, but returns an error"
+                        },
+                        {
+                            "code": 404,
+                            "message": "Model not found"
+                        },
+                        {
+                            "code": 400,
+                            "message": "Bad request"
+                        },
+                        {
+                            "code": 403,
+                            "message": "Forbidden"
+                        },
+                        {
+                            "code": 401,
+                            "message": "Not Authorized"
+                        },
+                        {
+                            "code": 405,
+                            "message": "Method not allowed"
+                        },
+                        {
+                            "code": 500,
+                            "message": "Internal server error"
+                        },
+                        {
+                            "code": 501,
+                            "message": "Not implemented"
+                        },
+                        {
+                            "code": 503,
+                            "message": "Service unavailable"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "/substance/{uuid}",
+            "operations": [
+                {
+                    "method": "GET",
+                    "summary": "Get a substance",
+                    "notes": "Returns substance representation",
+                    "type": "Substance",
+                    "nickname": "getSubstanceByUUID",
+                    "authorizations": { },
+                    "parameters": [
+                        {
+                            "name": "uuid",
+                            "description": "Substance UUID",
+                            "required": true,
+                            "type": "string",
+                            "paramType": "path",
+                            "allowMultiple": false,
+                            "defaultValue": "IUC4-efdb21bb-e79f-3286-a988-b6f6944d3734"
+                        },
+                        {
+                            "name": "property_uris[]",
+                            "description": "Property URIs",
+                            "required": false,
+                            "type": "string",
+                            "paramType": "query",
+                            "allowMultiple": true
+                        }
+                    ],
+                    "responseMessages": [
+                        {
+                            "code": 200,
+                            "message": "OK"
+                        },
+                        {
+                            "code": 400,
+                            "message": "Invalid substance identifier"
+                        },
+                        {
+                            "code": 404,
+                            "message": "Substance not found"
+                        },
+                        {
+                            "code": 403,
+                            "message": "Forbidden"
+                        },
+                        {
+                            "code": 401,
+                            "message": "Not Authorized"
+                        },
+                        {
+                            "code": 405,
+                            "message": "Method not allowed"
+                        },
+                        {
+                            "code": 500,
+                            "message": "Internal server error"
+                        },
+                        {
+                            "code": 501,
+                            "message": "Not implemented"
+                        },
+                        {
+                            "code": 503,
+                            "message": "Service unavailable"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "/substance/{uuid}/studysummary",
+            "operations": [
+                {
+                    "method": "GET",
+                    "summary": "Get study summary for the substance",
+                    "notes": "Study summary",
+                    "type": "StudySummaryFacet",
+                    "nickname": "getSubstanceStudySummary",
+                    "authorizations": { },
+                    "parameters": [
+                        {
+                            "name": "uuid",
+                            "description": "Substance UUID",
+                            "required": true,
+                            "type": "string",
+                            "paramType": "path",
+                            "allowMultiple": false,
+                            "defaultValue": "IUC4-efdb21bb-e79f-3286-a988-b6f6944d3734"
+                        },
+                        {
+                            "name": "top",
+                            "description": "Top endpoint category",
+                            "required": false,
+                            "type": "string",
+                            "paramType": "query",
+                            "allowMultiple": false,
+                            "enum": [
+                                "P-CHEM",
+                                "ENV FATE",
+                                "ECOTOX",
+                                "TOX"
+                            ]
+                        },
+                        {
+                            "name": "category",
+                            "description": "Endpoint category (The value in the facet.category.title field)",
+                            "required": false,
+                            "type": "string",
+                            "paramType": "query",
+                            "allowMultiple": false,
+                            "defaultValue": "",
+                            "enum": [
+                                "GI_GENERAL_INFORM",
+                                "PC_MELTING",
+                                "PC_BOILING",
+                                "PC_GRANULOMETRY",
+                                "PC_VAPOUR",
+                                "PC_PARTITION",
+                                "PC_WATER_SOL",
+                                "PC_SOL_ORGANIC",
+                                "PC_NON_SATURATED_PH",
+                                "PC_DISSOCIATION",
+                                "AGGLOMERATION_AGGREGATION",
+                                "CRYSTALLINE_PHASE",
+                                "CRYSTALLITE_AND_GRAIN_SIZE",
+                                "ASPECT_RATIO_SHAPE",
+                                "SPECIFIC_SURFACE_AREA",
+                                "ZETA_POTENTIAL",
+                                "SURFACE_CHEMISTRY",
+                                "DUSTINESS",
+                                "POROSITY",
+                                "POUR_DENSITY",
+                                "PHOTOCATALYTIC_ACTIVITY",
+                                "CATALYTIC_ACTIVITY",
+                                "PC_UNKNOWN",
+                                "TO_PHOTOTRANS_AIR",
+                                "TO_HYDROLYSIS",
+                                "TO_BIODEG_WATER_SCREEN",
+                                "TO_BIODEG_WATER_SIM",
+                                "EN_STABILITY_IN_SOIL",
+                                "EN_BIOACCUMULATION",
+                                "EN_BIOACCU_TERR",
+                                "EN_ADSORPTION",
+                                "EN_HENRY_LAW",
+                                "EC_FISHTOX",
+                                "EC_CHRONFISHTOX",
+                                "EC_DAPHNIATOX",
+                                "EC_CHRONDAPHNIATOX",
+                                "EC_ALGAETOX",
+                                "EC_BACTOX",
+                                "EC_SEDIMENTDWELLINGTOX",
+                                "EC_SOILDWELLINGTOX",
+                                "EC_HONEYBEESTOX",
+                                "EC_PLANTTOX",
+                                "EC_SOIL_MICRO_TOX",
+                                "TO_ACUTE_ORAL",
+                                "TO_ACUTE_INHAL",
+                                "TO_ACUTE_DERMAL",
+                                "TO_SKIN_IRRITATION",
+                                "TO_EYE_IRRITATION",
+                                "TO_SENSITIZATION",
+                                "TO_REPEATED_ORAL",
+                                "TO_REPEATED_INHAL",
+                                "TO_REPEATED_DERMAL",
+                                "TO_GENETIC_IN_VITRO",
+                                "TO_GENETIC_IN_VIVO",
+                                "TO_CARCINOGENICITY",
+                                "TO_REPRODUCTION",
+                                "TO_DEVELOPMENTAL",
+                                "UNKNOWN_TOXICITY",
+                                "PROTEOMICS"
+                            ]
+                        },
+                        {
+                            "name": "property",
+                            "description": "Property UUID, see Property service",
+                            "required": false,
+                            "type": "string",
+                            "paramType": "query",
+                            "allowMultiple": false
+                        },
+                        {
+                            "name": "property_uri",
+                            "description": "Property URI http://apps.ideaconsult.net:8080/enanomapper/property/{UUID} , see Property service",
+                            "required": false,
+                            "type": "string",
+                            "paramType": "query",
+                            "allowMultiple": false
+                        }
+                    ],
+                    "responseMessages": [
+                        {
+                            "code": 200,
+                            "message": "OK"
+                        },
+                        {
+                            "code": 400,
+                            "message": "Invalid substance identifier"
+                        },
+                        {
+                            "code": 404,
+                            "message": "Substance not found"
+                        },
+                        {
+                            "code": 403,
+                            "message": "Forbidden"
+                        },
+                        {
+                            "code": 401,
+                            "message": "Not Authorized"
+                        },
+                        {
+                            "code": 405,
+                            "message": "Method not allowed"
+                        },
+                        {
+                            "code": 500,
+                            "message": "Internal server error"
+                        },
+                        {
+                            "code": 501,
+                            "message": "Not implemented"
+                        },
+                        {
+                            "code": 503,
+                            "message": "Service unavailable"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "/substance/{uuid}/study",
+            "operations": [
+                {
+                    "method": "GET",
+                    "summary": "Get substance study",
+                    "notes": "Substance study",
+                    "type": "SubstanceStudy",
+                    "nickname": "getSubstanceStudy",
+                    "authorizations": { },
+                    "parameters": [
+                        {
+                            "name": "uuid",
+                            "description": "Substance UUID",
+                            "required": true,
+                            "type": "string",
+                            "paramType": "path",
+                            "allowMultiple": false,
+                            "defaultValue": "IUC4-efdb21bb-e79f-3286-a988-b6f6944d3734"
+                        },
+                        {
+                            "name": "top",
+                            "description": "Top endpoint category",
+                            "required": false,
+                            "type": "string",
+                            "paramType": "query",
+                            "allowMultiple": false,
+                            "enum": [
+                                "P-CHEM",
+                                "ENV FATE",
+                                "ECOTOX",
+                                "TOX"
+                            ]
+                        },
+                        {
+                            "name": "category",
+                            "description": "Endpoint category (The value in the protocol.category.code field)",
+                            "required": false,
+                            "type": "string",
+                            "paramType": "query",
+                            "allowMultiple": false,
+                            "defaultValue": "",
+                            "enum": [
+                                "GI_GENERAL_INFORM",
+                                "PC_MELTING",
+                                "PC_BOILING",
+                                "PC_GRANULOMETRY",
+                                "PC_VAPOUR",
+                                "PC_PARTITION",
+                                "PC_WATER_SOL",
+                                "PC_SOL_ORGANIC",
+                                "PC_NON_SATURATED_PH",
+                                "PC_DISSOCIATION",
+                                "AGGLOMERATION_AGGREGATION",
+                                "CRYSTALLINE_PHASE",
+                                "CRYSTALLITE_AND_GRAIN_SIZE",
+                                "ASPECT_RATIO_SHAPE",
+                                "SPECIFIC_SURFACE_AREA",
+                                "ZETA_POTENTIAL",
+                                "SURFACE_CHEMISTRY",
+                                "DUSTINESS",
+                                "POROSITY",
+                                "POUR_DENSITY",
+                                "PHOTOCATALYTIC_ACTIVITY",
+                                "CATALYTIC_ACTIVITY",
+                                "PC_UNKNOWN",
+                                "TO_PHOTOTRANS_AIR",
+                                "TO_HYDROLYSIS",
+                                "TO_BIODEG_WATER_SCREEN",
+                                "TO_BIODEG_WATER_SIM",
+                                "EN_STABILITY_IN_SOIL",
+                                "EN_BIOACCUMULATION",
+                                "EN_BIOACCU_TERR",
+                                "EN_ADSORPTION",
+                                "EN_HENRY_LAW",
+                                "EC_FISHTOX",
+                                "EC_CHRONFISHTOX",
+                                "EC_DAPHNIATOX",
+                                "EC_CHRONDAPHNIATOX",
+                                "EC_ALGAETOX",
+                                "EC_BACTOX",
+                                "EC_SEDIMENTDWELLINGTOX",
+                                "EC_SOILDWELLINGTOX",
+                                "EC_HONEYBEESTOX",
+                                "EC_PLANTTOX",
+                                "EC_SOIL_MICRO_TOX",
+                                "TO_ACUTE_ORAL",
+                                "TO_ACUTE_INHAL",
+                                "TO_ACUTE_DERMAL",
+                                "TO_SKIN_IRRITATION",
+                                "TO_EYE_IRRITATION",
+                                "TO_SENSITIZATION",
+                                "TO_REPEATED_ORAL",
+                                "TO_REPEATED_INHAL",
+                                "TO_REPEATED_DERMAL",
+                                "TO_GENETIC_IN_VITRO",
+                                "TO_GENETIC_IN_VIVO",
+                                "TO_CARCINOGENICITY",
+                                "TO_REPRODUCTION",
+                                "TO_DEVELOPMENTAL",
+                                "UNKNOWN_TOXICITY",
+                                "PROTEOMICS"
+                            ]
+                        },
+                        {
+                            "name": "property",
+                            "description": "Property UUID",
+                            "required": false,
+                            "type": "string",
+                            "paramType": "query",
+                            "allowMultiple": false
+                        },
+                        {
+                            "name": "property_uri",
+                            "description": "Property URI http://apps.ideaconsult.net:8080/enanomapper/property/{UUID} , see Property service",
+                            "required": false,
+                            "type": "string",
+                            "paramType": "query",
+                            "allowMultiple": false
+                        },
+                        {
+                            "name": "page",
+                            "description": "Staring page",
+                            "required": false,
+                            "type": "int",
+                            "paramType": "query",
+                            "allowMultiple": false,
+                            "defaultValue": "0",
+                            "minimum": "0",
+                            "maximum": "10000"
+                        },
+                        {
+                            "name": "pagesize",
+                            "description": "Page size",
+                            "required": false,
+                            "type": "int",
+                            "paramType": "query",
+                            "allowMultiple": false,
+                            "defaultValue": "10",
+                            "minimum": "1",
+                            "maximum": "10000"
+                        }
+                    ],
+                    "responseMessages": [
+                        {
+                            "code": 200,
+                            "message": "OK"
+                        },
+                        {
+                            "code": 400,
+                            "message": "Invalid substance identifier"
+                        },
+                        {
+                            "code": 404,
+                            "message": "Substance not found"
+                        },
+                        {
+                            "code": 403,
+                            "message": "Forbidden"
+                        },
+                        {
+                            "code": 401,
+                            "message": "Not Authorized"
+                        },
+                        {
+                            "code": 405,
+                            "message": "Method not allowed"
+                        },
+                        {
+                            "code": 500,
+                            "message": "Internal server error"
+                        },
+                        {
+                            "code": 501,
+                            "message": "Not implemented"
+                        },
+                        {
+                            "code": 503,
+                            "message": "Service unavailable"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "/substance/{uuid}/composition",
+            "operations": [
+                {
+                    "method": "GET",
+                    "summary": "Get substance composition",
+                    "notes": "Substance composition",
+                    "type": "SubstanceComposition",
+                    "nickname": "getSubstanceComposition",
+                    "authorizations": { },
+                    "parameters": [
+                        {
+                            "name": "uuid",
+                            "description": "Substance UUID",
+                            "required": true,
+                            "type": "string",
+                            "paramType": "path",
+                            "allowMultiple": false,
+                            "defaultValue": "IUC4-efdb21bb-e79f-3286-a988-b6f6944d3734"
+                        },
+                        {
+                            "name": "page",
+                            "description": "Staring page",
+                            "required": false,
+                            "type": "int",
+                            "paramType": "query",
+                            "allowMultiple": false,
+                            "defaultValue": "0",
+                            "minimum": "0",
+                            "maximum": "10000"
+                        },
+                        {
+                            "name": "pagesize",
+                            "description": "Page size",
+                            "required": false,
+                            "type": "int",
+                            "paramType": "query",
+                            "allowMultiple": false,
+                            "defaultValue": "10",
+                            "minimum": "1",
+                            "maximum": "10000"
+                        }
+                    ],
+                    "responseMessages": [
+                        {
+                            "code": 200,
+                            "message": "OK"
+                        },
+                        {
+                            "code": 400,
+                            "message": "Invalid substance identifier"
+                        },
+                        {
+                            "code": 404,
+                            "message": "Substance not found"
+                        },
+                        {
+                            "code": 403,
+                            "message": "Forbidden"
+                        },
+                        {
+                            "code": 401,
+                            "message": "Not Authorized"
+                        },
+                        {
+                            "code": 405,
+                            "message": "Method not allowed"
+                        },
+                        {
+                            "code": 500,
+                            "message": "Internal server error"
+                        },
+                        {
+                            "code": 501,
+                            "message": "Not implemented"
+                        },
+                        {
+                            "code": 503,
+                            "message": "Service unavailable"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "/substance/{uuid}/structures",
+            "operations": [
+                {
+                    "method": "GET",
+                    "summary": "Get substance composition as a dataset",
+                    "notes": "Substance composition",
+                    "type": "Dataset",
+                    "nickname": "getSubstanceComposition",
+                    "authorizations": { },
+                    "parameters": [
+                        {
+                            "name": "uuid",
+                            "description": "Substance UUID",
+                            "required": true,
+                            "type": "string",
+                            "paramType": "path",
+                            "allowMultiple": false,
+                            "defaultValue": "IUC4-efdb21bb-e79f-3286-a988-b6f6944d3734"
+                        },
+                        {
+                            "name": "page",
+                            "description": "Staring page",
+                            "required": false,
+                            "type": "int",
+                            "paramType": "query",
+                            "allowMultiple": false,
+                            "defaultValue": "0",
+                            "minimum": "0",
+                            "maximum": "10000"
+                        },
+                        {
+                            "name": "pagesize",
+                            "description": "Page size",
+                            "required": false,
+                            "type": "int",
+                            "paramType": "query",
+                            "allowMultiple": false,
+                            "defaultValue": "10",
+                            "minimum": "1",
+                            "maximum": "10000"
+                        }
+                    ],
+                    "responseMessages": [
+                        {
+                            "code": 200,
+                            "message": "OK"
+                        },
+                        {
+                            "code": 400,
+                            "message": "Invalid substance identifier"
+                        },
+                        {
+                            "code": 404,
+                            "message": "Substance not found"
+                        },
+                        {
+                            "code": 403,
+                            "message": "Forbidden"
+                        },
+                        {
+                            "code": 401,
+                            "message": "Not Authorized"
+                        },
+                        {
+                            "code": 405,
+                            "message": "Method not allowed"
+                        },
+                        {
+                            "code": 500,
+                            "message": "Internal server error"
+                        },
+                        {
+                            "code": 501,
+                            "message": "Not implemented"
+                        },
+                        {
+                            "code": 503,
+                            "message": "Service unavailable"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "models": {
+        "StudySummaryFacet": { }
+    },
+    "info": {
+        "title": "AMBIT 2.5.9-SNAPSHOT",
+        "description": "AMBIT REST web services. More \n at <a href=\"http://apps.ideaconsult.net:8080/enanomapper\">http://apps.ideaconsult.net:8080/enanomapper</a> ",
+        "termsOfServiceUrl": "http://ambit.sf.net",
+        "contact": "Ideaconsult Ltd.",
+        "license": "License",
+        "licenseUrl": "http://www.gnu.org/licenses/lgpl.html"
+    }
+
+}
