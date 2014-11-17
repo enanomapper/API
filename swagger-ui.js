@@ -1379,7 +1379,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 
     HeaderView.prototype.events = {
       'click #show-enanomapper-dev-icon': 'showEnanoMapperDev',      
-      'click #show-dev-icon': 'showPartnerDev',
+      'click #show-enanomapper-api-icon': 'showPartnerDev',
       'click #show-pet-store-icon': 'showPetStore',
       'click #explore': 'showCustom',
       'keyup #input_baseUrl': 'showCustomOnKeyup',
@@ -1402,7 +1402,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 
     HeaderView.prototype.showPartnerDev = function(e) {
       return this.trigger('update-swagger-ui', {
-         url: "http://petstore.swagger.wordnik.com/api/api-docs"
+         url: "https://raw.githubusercontent.com/enanomapper/API/master/apiDocs/src/docs/api-docs.json"
       });
     };
     
