@@ -1380,7 +1380,6 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     HeaderView.prototype.events = {
       'click #show-enanomapper-dev-icon': 'showEnanoMapperDev',      
       'click #show-enanomapper-api-icon': 'showPartnerDev',
-      'click #show-pet-store-icon': 'showPetStore',
       'click #explore': 'showCustom',
       'keyup #input_baseUrl': 'showCustomOnKeyup',
       'keyup #input_apiKey': 'showCustomOnKeyup'
