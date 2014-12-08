@@ -1380,6 +1380,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     HeaderView.prototype.events = {
       'click #show-enanomapper-dev-icon': 'showEnanoMapperDev',      
       'click #show-enanomapper-api-icon': 'showPartnerDev',
+      'click #show-enmprotocol-api-icon': 'showEnanoMapperProtocolDev',
       'click #explore': 'showCustom',
       'keyup #input_baseUrl': 'showCustomOnKeyup',
       'keyup #input_apiKey': 'showCustomOnKeyup'
@@ -1396,6 +1397,12 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     HeaderView.prototype.showEnanoMapperDev = function(e) {
       return this.trigger('update-swagger-ui', {
         url: "http://apps.ideaconsult.net:8080/enmtest/api-docs"
+      });
+    };
+
+    HeaderView.prototype.showEnanoMapperProtocolDev = function(e) {
+      return this.trigger('update-swagger-ui', {
+        url: "http://apps.ideaconsult.net:8080/enmprotocol/api-docs"
       });
     };
 
