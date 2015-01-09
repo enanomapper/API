@@ -1396,13 +1396,13 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     
     HeaderView.prototype.showEnanoMapperDev = function(e) {
       return this.trigger('update-swagger-ui', {
-        url: "http://apps.ideaconsult.net:8080/enmtest/api-docs"
+        url: "https://apps.ideaconsult.net/enmtest/api-docs"
       });
     };
 
     HeaderView.prototype.showEnanoMapperProtocolDev = function(e) {
       return this.trigger('update-swagger-ui', {
-        url: "http://apps.ideaconsult.net:8080/enmprotocol/api-docs"
+        url: "https://apps.ideaconsult.net/enmprotocol/api-docs"
       });
     };
 
