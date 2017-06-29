@@ -1378,7 +1378,8 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     }
 
     HeaderView.prototype.events = {
-      'click #show-enanomapper-dev-icon': 'showEnanoMapperDev',      
+      'click #show-enanomapper-dev-icon': 'showEnanoMapperDev',    
+      'click #show-enmnanoreg-dev-icon': 'showEnmNanoregDev',    
       'click #show-enanomapper-api-icon': 'showPartnerDev',
       'click #show-enmprotocol-api-icon': 'showEnanoMapperProtocolDev',
       'click #explore': 'showCustom',
@@ -1399,6 +1400,11 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
         url: "https://data.enanomapper.net/api-docs"
       });
     };
+    HeaderView.prototype.showEnmNanoregDev = function(e) {
+      return this.trigger('update-swagger-ui', {
+        url: "https://apps.ideaconsult.net/nanoreg1/api-docs"
+      });
+    };	  
 
     HeaderView.prototype.showEnanoMapperProtocolDev = function(e) {
       return this.trigger('update-swagger-ui', {
